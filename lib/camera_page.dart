@@ -166,3 +166,11 @@ Widget _buildZoomControls() {
       ),
     );
   }
+
+@override
+  void dispose() {
+    _controller?.dispose();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    super.dispose();
+  }
+
