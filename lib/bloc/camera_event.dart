@@ -14,3 +14,15 @@ final class TakePicture extends CameraEvent {
     TakePicture(this.onPictureTaken);
 }
 
+final class TapToFocus extends CameraEvent {
+    final Offset position;
+    final Size previewSize;
+    TapToFocus(this.position, this.previewSize);
+}
+
+final class PickImageFromGallery extends CameraEvent {}
+
+final class OpenCameraAndCapture extends CameraEvent {
+    final BuildContext context;
+    OpenCameraAndCapture(this.context);
+}
