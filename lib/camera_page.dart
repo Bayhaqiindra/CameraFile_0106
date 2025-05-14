@@ -83,3 +83,12 @@ void _setZoom(double value) async {
     await _controller!.setZoomLevel(_zoom);
     setState(() {});
   }
+
+void _handleTap(TapDownDetails details, BoxConstraints constraints) {
+    final offset = Offset(
+      details.localPosition.dx / constraints.maxWidth,
+      details.localPosition.dy / constraints.maxHeight,
+    );
+    _controller?.setFocusPoint(offset);
+    _controller?.setExposurePoint(offset);
+  }
