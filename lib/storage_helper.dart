@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:path/path.dart' as path;
 
-class StorageHelpper {
+class StorageHelper {
   static Future<String> _getFolderPath() async {
     final Directory dir = Directory(
       '/storage/emulated/0/DCIM/FlutterNativeCam',
