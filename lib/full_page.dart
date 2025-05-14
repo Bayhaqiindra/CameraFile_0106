@@ -7,3 +7,6 @@ class FullPage extends StatefulWidget {
   @override
   State<FullPage> createState() => _FullPageState();
 }
+
+class _FullPageState extends State<FullPage> {
+  File? _imageFile;
