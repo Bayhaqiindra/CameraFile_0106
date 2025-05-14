@@ -20,3 +20,15 @@ class _CameraPageState extends State<CameraPage> {
   double _minZoom = 1.0;
   double _maxZoom = 1.0;
   bool _isZoomSupported = false;
+
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+    _initializeCamera();
+  }
+
+  Future<void> _initializeCamera() async {
+    _cameras = await availableCameras();
+    await _setupCamera(_selectedCameraIdx);
+  }
