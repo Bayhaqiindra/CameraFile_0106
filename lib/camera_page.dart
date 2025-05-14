@@ -64,3 +64,8 @@ Future<void> _captureImage() async {
     final XFile file = await _controller!.takePicture();
     Navigator.pop(context, File(file.path));
   }
+
+  void _switchCamera() async {
+    final nextIndex = (_selectedCameraIdx + 1) % _cameras.length;
+    await _setupCamera(nextIndex);
+  }
