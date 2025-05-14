@@ -174,3 +174,43 @@ Widget _buildZoomControls() {
     super.dispose();
   }
 
+@override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: (_controller?.value.isInitialized ?? false)
+      ? LayoutBuilder(builder: context, constraints) {
+        return Stack(
+          fit: StackFit.expand,
+          children: [
+GestureDetector(
+  onTapDown:(d) =>_handleTap(d, constraints),
+  child: CameraPreview(_controller!),
+),
+Positioned(
+  top: 50,
+  right: 20,
+  child: Column(
+    children: [
+      _circleButton(
+        Icons.flip_camera_android, _switchCamera),
+        const SizedBox(height: 12),
+        _circleButton(_flashIcon(), _toggleFlash),
+    ],
+  ),
+),
+_buildZoomControls(),
+                  Positioned(
+                    bottom: 40,
+                    left: 0,
+                    right: 0,
+                    child: Center(
+                      child: FloatingActionButton(onPressed: onPressed)
+                    ),
+                  )
+                ],
+        );
+      }
+    )
+  }
+}
