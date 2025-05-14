@@ -16,3 +16,17 @@ Future<void> _requestPermissions() async {
     await Permission.storage.request();
     await Permission.manageExternalStorage.request();
   }
+
+Future<void> _takePicture() async {
+    await _requestPermissions();
+    final File? result = await Navigator.push<File?>(
+      context,
+      MaterialPageRoute(builder: (_) => const CameraPage()),
+    );
+    if (result != null) {
+      final saved = await StorageHelper.saveImage(result, 'camera');
+      setState(() => _imageFile = saved);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Disimpan: ${saved.path}')));
+    }
+  }
