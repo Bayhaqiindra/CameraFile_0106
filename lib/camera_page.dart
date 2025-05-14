@@ -69,3 +69,10 @@ Future<void> _captureImage() async {
     final nextIndex = (_selectedCameraIdx + 1) % _cameras.length;
     await _setupCamera(nextIndex);
   }
+
+void _toggleFlash() async {
+    FlashMode next =
+        _flashMode == FlashMode.off ? FlashMode.always : FlashMode.off;
+    await _controller!.setFlashMode(next);
+    setState(() => _flashMode = next);
+  }
