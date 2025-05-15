@@ -79,3 +79,19 @@ Future<void> _onTapFocus(TapToFocus event, Emitter<CameraState> emit) async {
     await s.controller.setExposurePoint(relative);
   }
 
+Future<void> _onPickGallery(
+    PickImageFromGallery event,
+    Emitter<CameraState> emit,
+  ) async {
+    if (state is! CameraReady) return;
+    final picker = ImagePicker();
+    final picked = await picker.pickImage(source: ImageSource.gallery);
+    if (picked == null) return;
+    final file = File(picked.path);
+    emit(
+      (state as CameraReady).copyWith(
+        imageFile: file,
+        snackbarMessage: 'Berhasil memilih dari galeri',
+      ),
+    );
+  }
