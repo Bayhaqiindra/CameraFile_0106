@@ -21,34 +21,35 @@ class _CameraPageState extends State<CameraPage> {
   double _maxZoom = 1.0;
   bool _isZoomSupported = false;
 
-  @override
+  @override   
   void initState() {
     super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-    _initializeCamera();
+    _initialCamera();    
   }
 
-  Future<void> _initializeCamera() async {
+  Future<void> _initialCamera() async {
     _cameras = await availableCameras();
     await _setupCamera(_selectedCameraIdx);
   }
 
-Future<void> _setupCamera(int cameraIndex) async {
-    if (_controller != null) {
+  Future<void> _setupCamera(int cameraIndex) async {
+    if(_controller != null) {
       await _controller!.dispose();
     }
 
     final controller = CameraController(
       _cameras[cameraIndex],
       ResolutionPreset.max,
-      enableAudio: false,
+      enableAudio: false  
     );
 
     await controller.initialize();
     _minZoom = await controller.getMinZoomLevel();
-    _maxZoom = await controller.getMaxZoomLevel();
+    _maxZoom = await controller.getMaxZoomLevel();  // Fixed this assignment
     _isZoomSupported = _maxZoom > _minZoom;
     _zoom = _minZoom;
+
     await controller.setZoomLevel(_zoom);
     await controller.setFlashMode(_flashMode);
 
@@ -60,7 +61,7 @@ Future<void> _setupCamera(int cameraIndex) async {
     }
   }
 
-Future<void> _captureImage() async {
+  Future<void> _captureImage() async {
     final XFile file = await _controller!.takePicture();
     Navigator.pop(context, File(file.path));
   }
@@ -70,30 +71,35 @@ Future<void> _captureImage() async {
     await _setupCamera(nextIndex);
   }
 
-void _toggleFlash() async {
-    FlashMode next =
-        _flashMode == FlashMode.off ? FlashMode.always : FlashMode.off;
+  void _toogleFlash() async {
+    FlashMode next = _flashMode == FlashMode.off
+        ? FlashMode.auto
+        : _flashMode == FlashMode.auto
+            ? FlashMode.always
+            : FlashMode.off;
+
     await _controller!.setFlashMode(next);
     setState(() => _flashMode = next);
   }
 
-void _setZoom(double value) async {
-    if (!_isZoomSupported) return;
+  void _setZoom(double value) async {
+    if(!_isZoomSupported) return;
     _zoom = value.clamp(_minZoom, _maxZoom);
     await _controller!.setZoomLevel(_zoom);
     setState(() {});
   }
 
-void _handleTap(TapDownDetails details, BoxConstraints constraints) {
+  void _handleTap(TapDownDetails details, BoxConstraints constraint){
     final offset = Offset(
-      details.localPosition.dx / constraints.maxWidth,
-      details.localPosition.dy / constraints.maxHeight,
+      details.localPosition.dx / constraint.maxWidth,
+      details.localPosition.dy / constraint.maxHeight
     );
+
     _controller?.setFocusPoint(offset);
     _controller?.setExposurePoint(offset);
   }
 
-IconData _flashIcon() {
+  IconData _flashIcon() {
     switch (_flashMode) {
       case FlashMode.auto:
         return Icons.flash_auto;
@@ -104,7 +110,7 @@ IconData _flashIcon() {
     }
   }
 
-Widget _circleButton(IconData icon, VoidCallback onTap, {double size = 50}) {
+  Widget _circleButton(IconData icon, VoidCallback onTap, {double size = 50}) {
     return ClipOval(
       child: Material(
         color: Colors.white24,
@@ -113,18 +119,19 @@ Widget _circleButton(IconData icon, VoidCallback onTap, {double size = 50}) {
           child: SizedBox(
             width: size,
             height: size,
-            child: Icon(icon, color: Colors.white),
+            child: Icon(icon, color: Colors.white,),
           ),
         ),
       ),
     );
   }
 
-Widget _buildZoomControls() {
-    if (!_isZoomSupported) return const SizedBox.shrink();
+  Widget _buildZoomControls() {
+    if(!_isZoomSupported) return const SizedBox.shrink();
 
     return Positioned(
       bottom: 160,
+      left: 20,
       right: 20,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,49 +139,60 @@ Widget _buildZoomControls() {
           Row(
             children: [
               _circleButton(Icons.looks_one, () => _setZoom(1.0), size: 44),
-              const SizedBox(width: 10),
-              if (_maxZoom >= 3.0)
+              const SizedBox(width: 10,),
+              if(_maxZoom >= 3.0)
                 _circleButton(Icons.looks_3, () => _setZoom(3.0), size: 44),
-              const SizedBox(width: 10),
-              if (_maxZoom >= 3.0)
+              const SizedBox(width: 10,),
+              if (_maxZoom >= 5.0)
                 _circleButton(Icons.looks_5, () => _setZoom(5.0), size: 44),
             ],
           ),
 
           const SizedBox(height: 12),
+
           Row(
             children: [
-              const Icon(Icons.zoom_out, color: Colors.white),
+              const Icon(Icons.zoom_out, color: Colors.white,),
+
               Expanded(
                 child: Slider(
                   value: _zoom,
                   min: _minZoom,
                   max: _maxZoom,
                   divisions: ((_maxZoom - _minZoom) * 10).toInt(),
-                  label: '${_zoom.toStringAsFixed(1)}x',
+                  label: '${_zoom.toStringAsFixed(1)}x', 
                   onChanged: (value) => _setZoom(value),
                 ),
               ),
-              const Icon(Icons.zoom_in, color: Colors.purpleAccent),
+              const Icon(Icons.zoom_in, color: Colors.white,)
             ],
           ),
+
           Container(
             margin: const EdgeInsets.only(top: 6),
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            decoration: BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: Text(
+              '${_zoom.toStringAsFixed(1)}x',
+              style: const TextStyle(color: Colors.white),
+            ),
           )
         ],
       ),
     );
   }
 
-@override
+  @override
   void dispose() {
     _controller?.dispose();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     super.dispose();
   }
 
-@override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
@@ -195,7 +213,7 @@ Widget _buildZoomControls() {
                         children: [
                           _circleButton(Icons.flip_camera_android, _switchCamera),
                           const SizedBox(height: 12),
-                          _circleButton(_flashIcon(), _toggleFlash),
+                          _circleButton(_flashIcon(), _toogleFlash),
                         ],
                       ),
                     ),
