@@ -27,7 +27,7 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
     on<RequestPermissions>(_onRequestPermissions);
   }
 
-Future<void> _onInit(
+  Future<void> _onInit(
     InitializeCamera event,
     Emitter<CameraState> emit,
   ) async {
@@ -35,14 +35,14 @@ Future<void> _onInit(
     await _setupController(0, emit);
   }
 
-Future<void> _onSwitch(SwitchCamera event, Emitter<CameraState> emit) async {
+  Future<void> _onSwitch(SwitchCamera event, Emitter<CameraState> emit) async {
     if (state is! CameraReady) return;
     final s = state as CameraReady;
     final next = (s.selectedIndex + 1) % _cameras.length;
     await _setupController(next, emit, previous: s);
   }
 
-Future<void> _onToggleFlash(
+  Future<void> _onToggleFlash(
     ToggleFlash event,
     Emitter<CameraState> emit,
   ) async {
@@ -68,7 +68,7 @@ Future<void> _onToggleFlash(
     event.onPictureTaken(File(file.path));
   }
 
-Future<void> _onTapFocus(TapToFocus event, Emitter<CameraState> emit) async {
+  Future<void> _onTapFocus(TapToFocus event, Emitter<CameraState> emit) async {
     if (state is! CameraReady) return;
     final s = state as CameraReady;
     final relative = Offset(
@@ -79,7 +79,7 @@ Future<void> _onTapFocus(TapToFocus event, Emitter<CameraState> emit) async {
     await s.controller.setExposurePoint(relative);
   }
 
-Future<void> _onPickGallery(
+  Future<void> _onPickGallery(
     PickImageFromGallery event,
     Emitter<CameraState> emit,
   ) async {
@@ -100,12 +100,19 @@ Future<void> _onPickGallery(
     OpenCameraAndCapture event,
     Emitter<CameraState> emit,
   ) async {
-    if (state is! CameraReady) return;
+    print('[CameraBloc] OpenCamerAndCapture triggered');
+    
+    if (state is! CameraReady) {
+      print('[CameraBloc] state is not ready, abort');
+      return;
+    }
+
     final file = await Navigator.push<File?>(
       event.context,
       MaterialPageRoute(
         builder:
-            (_) => BlocProvider.value(value: this, child: const CameraPage()),
+            (_) => BlocProvider.value(value: this, child: const CameraPage()
+            ),
       ),
     );
     if (file != null) {
@@ -119,7 +126,7 @@ Future<void> _onPickGallery(
     }
   }
 
-Future<void> _onDeleteImage(
+  Future<void> _onDeleteImage(
     DeleteImage event,
     Emitter<CameraState> emit,
   ) async {
@@ -137,7 +144,7 @@ Future<void> _onDeleteImage(
     );
   }
 
-Future<void> _onClearSnackbar(
+  Future<void> _onClearSnackbar(
     ClearSnackbar event,
     Emitter<CameraState> emit,
   ) async {
@@ -170,7 +177,7 @@ Future<void> _onClearSnackbar(
     );
   }
 
-@override
+  @override
   Future<void> close() async {
     if (state is CameraReady) {
       await (state as CameraReady).controller.dispose();
