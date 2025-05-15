@@ -136,3 +136,36 @@ Future<void> _onDeleteImage(
       ),
     );
   }
+
+Future<void> _onClearSnackbar(
+    ClearSnackbar event,
+    Emitter<CameraState> emit,
+  ) async {
+    if (state is! CameraReady) return;
+    final s = state as CameraReady;
+    emit(s.copyWith(clearSnackbar: true));
+  }
+
+  Future<void> _setupController(
+    int index,
+    Emitter<CameraState> emit, {
+    CameraReady? previous,
+  }) async {
+    await previous?.controller.dispose();
+    final controller = CameraController(
+      _cameras[index],
+      ResolutionPreset.max,
+      enableAudio: false,
+    );
+    await controller.initialize();
+    await controller.setFlashMode(previous?.flashMode ?? FlashMode.off);
+    emit(
+      CameraReady(
+        controller: controller,
+        selectedIndex: index,
+        flashMode: previous?.flashMode ?? FlashMode.off,
+        imageFile: previous?.imageFile,
+        snackbarMessage: null,
+      ),
+    );
+  }
