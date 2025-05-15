@@ -1,16 +1,7 @@
-# pertemuan_7
+📸 Screenshot Hasil
 
-A new Flutter project.
+🧠 BLoC Version
+<p align="center"> <img src="https://github.com/user-attachments/assets/2e5f1fb3-bc3e-4205-84db-2d013fbd33ab" width="300"><br><br> <img src="https://github.com/user-attachments/assets/f51ea671-c0a2-4edf-98d4-ff3408a25c5b" width="300"> <img src="https://github.com/user-attachments/assets/377febb4-9ca8-4771-96ee-6e45007917f7" width="300"> <img src="https://github.com/user-attachments/assets/72097b3e-8d99-4706-b4da-69753264884b" width="300"><br><br> <img src="https://github.com/user-attachments/assets/3f77872a-8c3a-428e-9f30-15a884100a44" width="300"> <img src="https://github.com/user-attachments/assets/0b728763-da09-4940-bea2-735653dd9263" width="300"> </p>
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+📱 Non-BLoC Version
+<p align="center"> <img src="https://github.com/user-attachments/assets/34611924-2332-4573-99d2-309a8de6cf15" width="300"><br><br> <img src="https://github.com/user-attachments/assets/06492708-8824-44ce-9742-b2fc0a05e72a" width="300"> <img src="https://github.com/user-attachments/assets/a4e3dcb8-6201-400a-bd6e-e5e4da1c8804" width="300"> <img src="https://github.com/user-attachments/assets/85fb3391-497b-4199-85d1-0e0236676325" width="300"><br><br> <img src="https://github.com/user-attachments/assets/ed40bb9d-0aae-418f-8816-5206c26d771b" width="300"> <img src="https://github.com/user-attachments/assets/009164b3-d2bc-44d4-b424-3ddaad8454d2" width="300"> <img src="https://github.com/user-attachments/assets/73c4a435-c716-49c1-9dfc-f48426ea939d" width="300"> <img src="https://github.com/user-attachments/assets/7e3814a1-17a7-4af3-be4b-680320749d37" width="300"> </p>
