@@ -169,3 +169,34 @@ Future<void> _onClearSnackbar(
       ),
     );
   }
+
+@override
+  Future<void> close() async {
+    if (state is CameraReady) {
+      await (state as CameraReady).controller.dispose();
+    }
+    return super.close();
+  }
+
+  Future<void> _onRequestPermissions(
+    RequestPermissions event,
+    Emitter<CameraState> emit,
+  ) async {
+    final statuses =
+        await [
+          Permission.camera,
+          Permission.storage,
+          Permission.manageExternalStorage,
+        ].request();
+
+    final denied = statuses.entries.where((e) => !e.value.isGranted).toList();
+
+    if (denied.isNotEmpty && state is CameraReady) {
+      emit(
+        (state as CameraReady).copyWith(
+          snackbarMessage: 'Izin kamera atau penyimpanan ditolak.',
+        ),
+      );
+    }
+  }
+}
