@@ -15,7 +15,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: FullPage()
+      home: FullPage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

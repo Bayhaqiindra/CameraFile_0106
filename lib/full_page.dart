@@ -78,7 +78,8 @@ class _FullPageState extends State<FullPage> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Image.file(_imageFile!, width: double.infinity),
+                    child: Image.file(_imageFile!, width: double.infinity,
+                    ),
                   ),
                   Text(
                     'Gambar disimpan di: ${_imageFile?.path ?? 'Tidak ada'}',
@@ -91,7 +92,7 @@ class _FullPageState extends State<FullPage> {
                       await _imageFile?.delete();
                       setState(() => _imageFile = null);
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Gambar dihapus')),
+                        const SnackBar(content: Text('Gambar dihapus'))
                       );
                     },
                   ),
