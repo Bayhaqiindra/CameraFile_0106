@@ -95,3 +95,26 @@ Future<void> _onPickGallery(
       ),
     );
   }
+
+  Future<void> _onOpenCamera(
+    OpenCameraAndCapture event,
+    Emitter<CameraState> emit,
+  ) async {
+    if (state is! CameraReady) return;
+    final file = await Navigator.push<File?>(
+      event.context,
+      MaterialPageRoute(
+        builder:
+            (_) => BlocProvider.value(value: this, child: const CameraPage()),
+      ),
+    );
+    if (file != null) {
+      final saved = await StorageHelper.saveImage(file, 'camera');
+      emit(
+        (state as CameraReady).copyWith(
+          imageFile: saved,
+          snackbarMessage: 'Disimpan: ${saved.path}',
+        ),
+      );
+    }
+  }
