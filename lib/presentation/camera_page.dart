@@ -98,7 +98,7 @@ class _CameraPageState extends State<CameraPage> {
                         },
                         child: const Icon(
                           Icons.camera_alt,
-                          color: Colors.black,
+                          color: Colors.black
                         ),
                       ),
                     ),

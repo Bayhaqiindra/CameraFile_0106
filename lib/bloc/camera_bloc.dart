@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pertemuan_7/presentation/camera_page.dart';
-import 'package:pertemuan_7/services/storage_helper.dart';
+import 'package:pertemuan_7/storage_helper.dart';
 
 import 'camera_event.dart';
 import 'camera_state.dart';
@@ -60,7 +60,7 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
 
   Future<void> _onTakePicture(
     TakePicture event,
-    Emitter<CameraState> emit,
+    Emitter<CameraState> emit
   ) async {
     if (state is! CameraReady) return;
     final s = state as CameraReady;
@@ -86,8 +86,7 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
     if (state is! CameraReady) return;
     final picker = ImagePicker();
     final picked = await picker.pickImage(source: ImageSource.gallery);
-    if (picked == null) return;
-    final file = File(picked.path);
+    final file = File(picked!.path);
     emit(
       (state as CameraReady).copyWith(
         imageFile: file,
@@ -100,8 +99,8 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
     OpenCameraAndCapture event,
     Emitter<CameraState> emit,
   ) async {
-    print('[CameraBloc] OpenCamerAndCapture triggered');
-    
+    print('[CameraBloc] OpenCameraAndCapture triggered');
+
     if (state is! CameraReady) {
       print('[CameraBloc] state is not ready, abort');
       return;
@@ -111,8 +110,7 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
       event.context,
       MaterialPageRoute(
         builder:
-            (_) => BlocProvider.value(value: this, child: const CameraPage()
-            ),
+            (_) => BlocProvider.value(value: this, child: const CameraPage()),
       ),
     );
     if (file != null) {
@@ -198,12 +196,14 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
 
     final denied = statuses.entries.where((e) => !e.value.isGranted).toList();
 
-    if (denied.isNotEmpty && state is CameraReady) {
-      emit(
-        (state as CameraReady).copyWith(
-          snackbarMessage: 'Izin kamera atau penyimpanan ditolak.',
-        ),
-      );
+    if (denied.isNotEmpty) {
+      if (state is CameraReady) {
+        emit(
+          (state as CameraReady).copyWith(
+            snackbarMessage: 'Izin kamera atau penyimpanan ditolak.',
+          ),
+        );
+      }
     }
   }
 }
