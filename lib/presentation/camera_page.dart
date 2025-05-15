@@ -11,3 +11,22 @@ class CameraPage extends StatefulWidget {
   @override
   State<CameraPage> createState() => _CameraPageState();
 }
+
+class _CameraPageState extends State<CameraPage> {
+  @override
+  void initState() {
+    super.initState();
+    final bloc = context.read<CameraBloc>();
+    if (bloc.state is! CameraReady) {
+      bloc.add(InitializeCamera());
+    }
+  }
+
+  IconData _flashIcon(FlashMode mode) {
+    return switch (mode) {
+      FlashMode.auto => Icons.flash_auto,
+      FlashMode.always => Icons.flash_on,
+      _ => Icons.flash_off,
+    };
+  }
+
